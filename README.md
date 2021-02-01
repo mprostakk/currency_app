@@ -4,6 +4,12 @@ Install ```pip install -r requirements.txt```
 
 Run app ```python manage.py runserver```
 
+```python manage.py makemigrations```
+
+```python manage.py migrate```
+
+```python manage.py createsuperuser```
+
 # Docker
 To run in development ```docker-compose up```
 
