@@ -8,7 +8,7 @@ from .exceptions import CurrencyException, SubscriptionDuplicateException
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
-        fields = ['currency_name', 'id']
+        fields = ['currency_name']
 
     def create(self, validated_data):
         _user_id = self.context['request'].user
