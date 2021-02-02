@@ -137,3 +137,41 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CURRENCIES = [
+    "CAD",
+    "HKD",
+    "ISK",
+    "PHP",
+    "DKK",
+    "HUF",
+    "CZK",
+    "AUD",
+    "RON",
+    "SEK",
+    "IDR",
+    "INR",
+    "BRL",
+    "RUB",
+    "HRK",
+    "JPY",
+    "THB",
+    "CHF",
+    "SGD",
+    "PLN",
+    "BGN",
+    "TRY",
+    "CNY",
+    "NOK",
+    "NZD",
+    "ZAR",
+    "USD",
+    "MXN",
+    "ILS",
+    "GBP",
+    "KRW",
+    "MYR",
+    "EUR"
+]
+
+BASE_CURRENCY = "USD"

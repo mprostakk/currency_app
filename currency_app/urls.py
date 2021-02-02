@@ -22,7 +22,7 @@ from rest_framework import routers
 import subscription.views as subscription_views
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'subscription/?', subscription_views.SubscriptionViewSet)
+router.register(r'subscription/?', subscription_views.SubscriptionViewSet, basename='subscription')
 
 
 urlpatterns = [
