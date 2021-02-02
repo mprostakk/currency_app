@@ -1,26 +1,14 @@
 from rest_framework import serializers
-from rest_framework.exceptions import APIException
 from currency_app.settings import CURRENCIES, BASE_CURRENCY
 
 from .models import Subscription
-
-
-class CurrencyException(APIException):
-    status_code = 403
-    default_detail = 'This currency doesnt exist in our system.'
-    default_code = 'currency_doesnt_exists'
-
-
-class SubscriptionDuplicateException(APIException):
-    status_code = 403
-    default_detail = 'User already has a subscription for currency.'
-    default_code = 'subscription_duplicate'
+from .exceptions import CurrencyException, SubscriptionDuplicateException
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
-        fields = ['currency_name']
+        fields = ['currency_name', 'id']
 
     def create(self, validated_data):
         _user_id = self.context['request'].user
@@ -34,14 +22,14 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'currency_name': currency_name
         }
 
-        tmp = Subscription.objects.filter(
+        subscription = Subscription.objects.filter(
             **subscription_params
         )
-        if tmp:
+        if subscription:
             raise SubscriptionDuplicateException
 
-        subscription = Subscription(
+        subscription_created = Subscription(
             **subscription_params
         )
-        subscription.save()
-        return subscription
+        subscription_created.save()
+        return subscription_created
