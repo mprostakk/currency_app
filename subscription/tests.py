@@ -36,7 +36,8 @@ class TestSubscription(TestCase):
         self.assertEqual(res.data.get('rates'), [])
 
     def test_get_no_rates_with_date(self):
-        pass
+        res = self.client.get('/api/rates?date=2021-01-30')
+        self.assertEqual(res.data.get('date'), '2021-01-30')
 
     def test_add_subscription_no_payload(self):
         res = self.client.post('/api/subscription')

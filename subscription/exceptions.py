@@ -7,13 +7,19 @@ class SubscriptionException(APIException):
     default_code = 'subscription_doesnt_exists'
 
 
+class SubscriptionDuplicateException(APIException):
+    status_code = 403
+    default_detail = 'User already has a subscription for currency.'
+    default_code = 'subscription_duplicate'
+
+
 class CurrencyException(APIException):
     status_code = 403
     default_detail = 'This currency doesnt exist in our system.'
     default_code = 'currency_doesnt_exists'
 
 
-class SubscriptionDuplicateException(APIException):
+class DateException(APIException):
     status_code = 403
-    default_detail = 'User already has a subscription for currency.'
-    default_code = 'subscription_duplicate'
+    default_detail = 'Date should be YYYY-MM-DD format or exist.'
+    default_code = 'invalid_date_format'
