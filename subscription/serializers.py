@@ -1,14 +1,20 @@
 from rest_framework import serializers
-from currency_app.settings import CURRENCIES, BASE_CURRENCY
 
 from .models import Subscription
 from .exceptions import CurrencyException, SubscriptionDuplicateException
+from currency_app.settings import CURRENCIES
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
+    rate = serializers.SerializerMethodField()
+
     class Meta:
         model = Subscription
-        fields = ['currency_name']
+        fields = ['currency_name', 'rate']
+
+    def get_rate(self, obj):
+        currency_name = obj.currency_name
+        return self.context.get('res').get('rates').get(currency_name)
 
     def create(self, validated_data):
         _user_id = self.context['request'].user

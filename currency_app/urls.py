@@ -23,7 +23,7 @@ import subscription.views as subscription_views
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'subscription/?', subscription_views.SubscriptionViewSet, basename='subscription')
-
+router.register(r'rates/?', subscription_views.RateViewSet, basename='rates')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
