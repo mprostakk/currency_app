@@ -11,7 +11,7 @@ from rest_framework import serializers
 import django_filters.rest_framework
 
 from .models import Subscription
-from .serializers import SubscriptionSerializer
+from .serializers import SubscriptionSerializer, CurrencySerializer
 from .exceptions import SubscriptionException
 from currency_app.settings import CURRENCIES, BASE_CURRENCY, EXCHANGE_URL
 
@@ -53,7 +53,7 @@ class RateViewSet(viewsets.ViewSet):
         queryset = Subscription.objects.filter(
             user=request.user
         )
-        serializer = SubscriptionSerializer(
+        serializer = CurrencySerializer(
             queryset,
             many=True,
             context={

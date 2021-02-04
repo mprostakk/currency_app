@@ -5,7 +5,7 @@ from .exceptions import CurrencyException, SubscriptionDuplicateException
 from currency_app.settings import CURRENCIES
 
 
-class SubscriptionSerializer(serializers.ModelSerializer):
+class CurrencySerializer(serializers.ModelSerializer):
     rate = serializers.SerializerMethodField()
 
     class Meta:
@@ -15,6 +15,12 @@ class SubscriptionSerializer(serializers.ModelSerializer):
     def get_rate(self, obj):
         currency_name = obj.currency_name
         return self.context.get('res').get('rates').get(currency_name)
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ['currency_name']
 
     def create(self, validated_data):
         _user_id = self.context['request'].user
