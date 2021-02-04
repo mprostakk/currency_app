@@ -14,6 +14,7 @@ from .models import Subscription
 from .serializers import SubscriptionSerializer, CurrencySerializer
 from .exceptions import SubscriptionException
 from currency_app.settings import CURRENCIES, BASE_CURRENCY, EXCHANGE_URL
+from subscription.api import get_exchange
 
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
@@ -46,8 +47,14 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
 class RateViewSet(viewsets.ViewSet):
     permission_classes = (IsAuthenticated,)
 
-    def list(self, request):
-        res = requests.get(f'{EXCHANGE_URL}/latest').json()
+    def list(self, request, *args, **kwargs):
+        base_currency: str = request.query_params.get('base_currency')
+        if base_currency is None:
+            base_currency = BASE_CURRENCY
+
+        base_currency = base_currency.upper()
+
+        res = get_exchange(base_currency)
         print('Sending request')
 
         queryset = Subscription.objects.filter(
@@ -64,7 +71,7 @@ class RateViewSet(viewsets.ViewSet):
 
         datetime_now = datetime.now()
         return Response({
-            'base_currency': BASE_CURRENCY,
+            'base_currency': base_currency,
             'date': datetime_now,
             'rates': serializer.data
         })

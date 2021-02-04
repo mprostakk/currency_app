@@ -3,8 +3,6 @@ from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from .models import Subscription
-
 
 class TestSubscriptionNoAuth(TestCase):
     def test_get_list(self):
@@ -32,7 +30,12 @@ class TestSubscription(TestCase):
         res = self.client.get('/api/subscription')
         self.assertEqual(res.data, [])
 
-    def test_get_no_subscriptions_with_date(self):
+    def test_get_no_rates(self):
+        res = self.client.get('/api/rates')
+        self.assertEqual(res.data.get('base_currency'), 'USD')
+        self.assertEqual(res.data.get('rates'), [])
+
+    def test_get_no_rates_with_date(self):
         pass
 
     def test_add_subscription_no_payload(self):
@@ -60,16 +63,27 @@ class TestSubscription(TestCase):
 
     def test_add_different_subscription(self):
         res1 = self.add_subscription('PLN')
-        res2 = self.add_subscription('USD')
+        res2 = self.add_subscription('GBP')
 
         self.assertEqual(res1.status_code, 201)
         self.assertEqual(res2.status_code, 201)
 
-    def test_get_currencies(self):
-        pass
+    def test_get_rates(self):
+        # TODO - mock request?
+        _ = self.add_subscription('PLN')
+        _ = self.add_subscription('GBP')
 
-    def test_get_currencies_with_changed_base_currency(self):
-        pass
+        res = self.client.get('/api/rates')
+        rates = res.data.get('rates')
+        self.assertEqual(len(rates), 2)
+        self.assertEqual(res.data.get('base_currency'), 'USD')
+
+    def test_get_rates_with_changed_base_currency(self):
+        _ = self.add_subscription('PLN')
+        _ = self.add_subscription('GBP')
+
+        res = self.client.get('/api/rates?base_currency=EUR')
+        self.assertEqual(res.data.get('base_currency'), 'EUR')
 
     def test_remove_subscription(self):
         _ = self.add_subscription('PLN')
@@ -96,8 +110,26 @@ class TestSubscription(TestCase):
 
         self.assertEqual(res_delete.status_code, 404)
 
-    def test_get_currencies_after_delete(self):
-        pass
+    def test_get_rates_after_delete(self):
+        _ = self.add_subscription('PLN')
+        _ = self.add_subscription('GBP')
+        _ = self.delete_subscription('PLN')
 
-    def test_get_currencies_after_delete_with_changed_base_currency(self):
-        pass
+        res = self.client.get('/api/rates')
+        rates = res.data.get('rates')
+
+        self.assertEqual(res.data.get('base_currency'), 'USD')
+        self.assertEqual(len(rates), 1)
+        currency_name = rates[0]['currency_name']
+        self.assertEqual(currency_name, 'GBP')
+
+    def test_get_rates_after_delete_with_changed_base_currency(self):
+        _ = self.add_subscription('PLN')
+        _ = self.add_subscription('GBP')
+        _ = self.delete_subscription('PLN')
+
+        res = self.client.get('/api/rates?base_currency=EUR')
+        rates = res.data.get('rates')
+
+        self.assertEqual(res.data.get('base_currency'), 'EUR')
+        self.assertEqual(len(rates), 1)
