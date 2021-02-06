@@ -1,15 +1,14 @@
 from datetime import datetime
 
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Subscription
 from .serializers import SubscriptionSerializer, CurrencySerializer
 from .exceptions import SubscriptionException, DateException
+from .api import get_exchange
 from currency_app.settings import BASE_CURRENCY
-from subscription.api import get_exchange
 
 
 class SubscriptionViewSet(viewsets.ModelViewSet):
@@ -63,7 +62,6 @@ class RateViewSet(viewsets.ViewSet):
             param_date = datetime.now().date().strftime('%Y-%m-%d')
 
         res = get_exchange(base_currency, exchange_date)
-        print('Sending request')
 
         queryset = Subscription.objects.filter(
             user=request.user
