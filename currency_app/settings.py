@@ -177,3 +177,5 @@ CURRENCIES = [
 BASE_CURRENCY = "USD"
 
 EXCHANGE_URL = 'https://api.exchangeratesapi.io'
+
+AUTHENTICATION_BACKENDS = ['users.models.EmailOrUsernameModelBackend']
