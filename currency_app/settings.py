@@ -118,6 +118,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
 }
 
+AUTHENTICATION_BACKENDS = ['users.models.EmailOrUsernameModelBackend']
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -177,5 +178,3 @@ CURRENCIES = [
 BASE_CURRENCY = "USD"
 
 EXCHANGE_URL = 'https://api.exchangeratesapi.io'
-
-AUTHENTICATION_BACKENDS = ['users.models.EmailOrUsernameModelBackend']
