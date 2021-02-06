@@ -1,4 +1,4 @@
-version: '2.2'
+version: '3'
 
 services:
   backend:
@@ -8,3 +8,8 @@ services:
     command: python manage.py runserver [::]:8000
     volumes:
       - '.:/code'
+  tests:
+    build: .
+    command: ./coverage.sh
+    volumes:
+    - '.:/code'
