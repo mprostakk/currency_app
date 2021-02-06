@@ -27,3 +27,6 @@ var/
 venv/
 db.sqlite3
 .idea/
+exchange_cache.sqlite
+coverage-report/
+.coverage
