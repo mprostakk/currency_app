@@ -1,7 +1,11 @@
 import requests
+import requests_cache
 
 from currency_app.settings import EXCHANGE_URL, CURRENCIES
 from subscription.exceptions import CurrencyException
+
+
+requests_cache.install_cache('exchange_cache', backend='sqlite', expire_after=300)
 
 
 def get_exchange(base_currency: str, exchange_date: str):
