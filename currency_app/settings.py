@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = '0zu9wi*2hsxruxd@pt@k5)o9g!o(7%k1a*j(x1^0p@zp%iu+av'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
 
 
 # Application definition
@@ -37,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'subscription',
 ]
 
 MIDDLEWARE = [
@@ -100,6 +104,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -118,3 +137,45 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CURRENCIES = [
+    "CAD",
+    "HKD",
+    "ISK",
+    "PHP",
+    "DKK",
+    "HUF",
+    "CZK",
+    "AUD",
+    "RON",
+    "SEK",
+    "IDR",
+    "INR",
+    "BRL",
+    "RUB",
+    "HRK",
+    "JPY",
+    "THB",
+    "CHF",
+    "SGD",
+    "PLN",
+    "BGN",
+    "TRY",
+    "CNY",
+    "NOK",
+    "NZD",
+    "ZAR",
+    "USD",
+    "MXN",
+    "ILS",
+    "GBP",
+    "KRW",
+    "MYR",
+    "EUR"
+]
+
+BASE_CURRENCY = "USD"
+
+EXCHANGE_URL = 'https://api.exchangeratesapi.io'
+
+AUTHENTICATION_BACKENDS = ['users.models.EmailOrUsernameModelBackend']
