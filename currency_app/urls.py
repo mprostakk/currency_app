@@ -19,7 +19,9 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 from rest_framework import routers
 
+import users.views as user_views
 import subscription.views as subscription_views
+
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'subscription/?', subscription_views.SubscriptionViewSet, basename='subscription')
@@ -27,6 +29,7 @@ router.register(r'rates/?', subscription_views.RateViewSet, basename='rates')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/register', user_views.UserCreate.as_view()),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include(router.urls)),
