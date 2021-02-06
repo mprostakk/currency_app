@@ -29,6 +29,12 @@ To run tests
 
 For rebuilding add ```--build```
 
+Migrate database
+
+```docker-compose exec backend python manage.py migrate```
+
+```docker-compose exec backend python manage.py makemigrations```
+
 ## Main Dependencies
 - Python 3.7.0
 - Django version 3.1.6
